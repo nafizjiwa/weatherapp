@@ -97,3 +97,9 @@ body {
   padding: 5px;
   font-size: 1.5em;
 }
+
+#weather-icon[src=""],
+#weather-icon:not([src]) {
+  display: none;
+}
+
