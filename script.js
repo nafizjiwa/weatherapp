@@ -1,124 +1,120 @@
-
-
 const btn = document.getElementById("get-weather-btn");
 
-btn.addEventListener('click', ()=>{
-  clearDisplay();
-  const select = document.getElementById('city-select');
+btn.addEventListener("click", () => {
+  const select = document.getElementById("city-select");
+  if (!select.value) {
+    enterCity();
+    return;
+  }
+  clearWarning();
   showWeather(select.value);
 });
 
-function clearDisplay() {
-    const clear = document.querySelector('.display');
-  // clear.textContent = "";
+function clearWarning() {
+  const existingMsg = document.getElementById("city-warning");
+  if (existingMsg) existingMsg.remove();
 }
 
 function enterCity() {
-    const msg = document.querySelector('.display');
-    msg.textContent = "****Choose a drop down City !****";
-    msg.style.textAlign = 'center';
-    msg.style.marginTop = '25px';
-    msg.style.color = "red";
-    msg.style.fontWeight = "bold";
-    msg.style.fontSize = '35px';
+  clearWarning();
+  const display = document.querySelector(".display");
+  const msg = document.createElement("p");
+  msg.id = "city-warning";
+  msg.textContent = "****Choose a drop down City !****";
+  msg.style.textAlign = "center";
+  msg.style.marginTop = "25px";
+  msg.style.color = "red";
+  msg.style.fontWeight = "bold";
+  msg.style.fontSize = "35px";
+  display.prepend(msg);
 }
 
-async function showWeather(city) {  
-  try{
-     
-    //CALL GET WEATHER FUNCTION 
+async function showWeather(city) {
+  try {
     const data = await getWeather(city);
-    
-    //1. WEATHER IMAGE/ICON
-    const icon = document.getElementById('weather-icon');
-    icon.src = !data.name ? 'N/A' : data.weather[0].icon;
-    
-    //2. MAIN TEMPERATURE
-    const main = document.getElementById('main-temperature');
-    main.innerHTML = !data.main.temp ? 'N/A' : data.main.temp + ' ℃';
 
-    //3. FEELS LIKE WEATHER
-    const feels = document.getElementById('feels-like');
-    feels.innerHTML = !data.main.feels_like ? 'N/A' : 'Feels Like: ' + data.main.feels_like + ' ℃';
-
-    //4. HUMIDITY
-    const humidity = document.getElementById('humidity'); 
-    humidity.innerHTML = !data.main.humidity ? 'N/A' : 'Humidity: ' + data.main.humidity + '%';
-   
-    //5. WIND SPEED
-    const windSpeed = document.getElementById('wind'); 
-    windSpeed.innerHTML = !data.wind.speed ? 'N/A' : 'Wind: ' + data.wind.speed + ' m/s';
-
-    //6. WIND GUST
-    const windGust = document.getElementById('wind-gust'); 
-    windGust.innerHTML = !data.wind.gust ? 'N/A' : 'Gust: ' + data.wind.gust + ' m/s';
-
-    //7. WEATHER TYPE/DESCRIPTION
-    const weatherMain = document.getElementById('weather-main');
-    weatherMain.innerHTML = !data.weather[0].main ? 'N/A' : data.weather[0].main ;
-
-    //8. LOCATION CITY
-    const location = document.getElementById('location');
-    location.innerHTML = data.name;
-
-    
-    
-    //CREATE HORIZONTAL LINE TO SEPARATE SECTIONS
-    const content = document.querySelector('.content-info');
-    const hr = document.createElement("hr");
-
-    //HORIZONTAL LINE DIMENSION
-    hr.style.border = "2px solid #ccc";
-    hr.style.width = "100%";
-    hr.style.margin = "10px 0";
-
-    //PLACE HORIZONTAL LINE BEFORE THIRD CHILD
-    const thirdChild = content.children[2];
-    content.insertBefore(hr, thirdChild);
-
-
-    
-     }
-  catch{
-      const main = document.getElementById('main-temperature');
-    main.innerHTML = 'N/A';
-    const feels = document.getElementById('feels-like');
-    feels.innerHTML = 'N/A';
-    const humidity = document.getElementById('humidity'); 
-    humidity.innerHTML = 'N/A';
-    const windSpeed = document.getElementById('wind'); 
-    windSpeed.innerHTML = 'N/A';
-    const windGust = document.getElementById('wind-gust'); 
-    windGust.innerHTML = 'N/A';
-    const weatherMain = document.getElementById('weather-main');
-    weatherMain.innerHTML = 'N/A';
-    const location = document.getElementById('location');
-    location.innerHTML = 'N/A';
-    
-    console.log("Something went wrong, please try again later");
+    // 1. WEATHER IMAGE/ICON
+    const icon = document.getElementById("weather-icon");
+    if (data.weather?.[0]?.icon) {
+      icon.src = data.weather[0].icon;
+      icon.alt = data.weather[0].description || "Weather icon";
+      icon.style.display = "inline";
+    } else {
+      icon.removeAttribute("src");
+      icon.style.display = "none";
     }
+
+    // 2. MAIN TEMPERATURE
+    document.getElementById("main-temperature").textContent =
+      data.main?.temp != null ? `${data.main.temp} ℃` : "N/A";
+
+    // 3. FEELS LIKE WEATHER
+    document.getElementById("feels-like").textContent =
+      data.main?.feels_like != null ? `Feels Like: ${data.main.feels_like} ℃` : "N/A";
+
+    // 4. HUMIDITY
+    document.getElementById("humidity").textContent =
+      data.main?.humidity != null ? `Humidity: ${data.main.humidity}%` : "N/A";
+
+    // 5. WIND SPEED
+    document.getElementById("wind").textContent =
+      data.wind?.speed != null ? `Wind: ${data.wind.speed} m/s` : "N/A";
+
+    // 6. WIND GUST
+    document.getElementById("wind-gust").textContent =
+      data.wind?.gust != null ? `Gust: ${data.wind.gust} m/s` : "N/A";
+
+    // 7. WEATHER TYPE/DESCRIPTION
+    document.getElementById("weather-main").textContent =
+      data.weather?.[0]?.main ?? "N/A";
+
+    // 8. LOCATION CITY
+    document.getElementById("location").textContent = data.name ?? "N/A";
+
+    // ADD HORIZONTAL LINE ONCE
+    const content = document.querySelector(".content-info");
+    if (content && !content.querySelector(".weather-divider")) {
+      const hr = document.createElement("hr");
+      hr.className = "weather-divider";
+      hr.style.border = "2px solid #ccc";
+      hr.style.width = "100%";
+      hr.style.margin = "10px 0";
+      content.insertBefore(hr, content.children[2] || null);
+    }
+  } catch (err) {
+    const ids = [
+      "main-temperature",
+      "feels-like",
+      "humidity",
+      "wind",
+      "wind-gust",
+      "weather-main",
+      "location",
+    ];
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = "N/A";
+    });
+    console.error("Something went wrong, please try again later:", err);
+  }
 }
 
-
-async function getWeather(city){
- try{
-  if(city === ''){
-   enterCity();
-      throw new Error("No city chosen");
-  }
-  const response = await fetch(`https://weather-proxy.freecodecamp.rocks/api/city/${city}`);
-  
-  const data = await response.json();
-
-  if(data.error){
+async function getWeather(city) {
+  try {
+    const response = await fetch(
+      `https://weather-proxy.freecodecamp.rocks/api/city/${encodeURIComponent(city)}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    const data = await response.json();
+    if (data.error) {
       throw new Error(data.error);
+    }
+    return data;
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong, please try again later");
+    throw error; // Re-throw so showWeather's catch block handles the fallback UI
   }
-  return data;
- }
- catch(error){
-    
-  console.log(error);
-  alert("Something went wrong, please try again later");
-  }
- 
 }
