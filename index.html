@@ -2,51 +2,49 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel='stylesheet' href="./styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
     <title>Weather App</title>
   </head>
 
   <body>
-    <!-- //START DISPLAY SECTION -->
-    <div class='display'> 
-
-        <!-- START FETCHED CONTENT DISPLAYED HERE -->
-        <div class="content-info">
-          <div id="location"></div>
-          <div class="sectionOne">
-              <div id="main-temperature"> </div>
-              <div class='description'>
-                <img id="weather-icon" src="" alt="">
-                <div id="weather-main"> </div>
-              </div>
-          </div>
-          
-
-          <div class='sectionTwo'>
-              <div id="humidity"></div>
-              <div id="feels-like"> </div>
-              <div id="wind"></div>
-              <div id="wind-gust"> </div>
+    <div class="display">
+      <!-- FETCHED CONTENT DISPLAYED HERE -->
+      <div class="content-info hidden">
+        <div id="location"></div>
+        <div class="sectionOne">
+          <div id="main-temperature"></div>
+          <div class="description">
+            <img id="weather-icon" src="" alt="" />
+            <div id="weather-main"></div>
           </div>
         </div>
-        <!-- END FETCHED CONTENT DISPLAYED HERE -->
-    
-       <div class="dropDownSection">
-            <p class='weather'><span>W</span>EATHER FOR:</p>
-            <select id="city-select">
-              <option value=""></option>
-              <option value="new york">New York</option>
-              <option value="chicago">Chicago</option>
-              <option value="los angeles">Los Angeles</option>
-              <option value="paris">Paris</option>
-              <option value="tokyo">Tokyo</option>
-              <option value="london">London</option>          
-            </select>
-            <button id= "get-weather-btn">Get Weather</button>
-       </div>
 
-    </div> 
-    <!-- //END DISPLAY SECTION -->
-   <script src="./script.js"></script>
+        <hr class="weather-divider" />
+
+        <div class="sectionTwo">
+          <div id="humidity"></div>
+          <div id="feels-like"></div>
+          <div id="wind"></div>
+          <div id="wind-gust"></div>
+        </div>
+      </div>
+
+      <div class="dropDownSection">
+        <p class="weather"><span>W</span>EATHER FOR:</p>
+        <select id="city-select">
+          <option value="">-- Select a city --</option>
+          <option value="new york">New York</option>
+          <option value="chicago">Chicago</option>
+          <option value="los angeles">Los Angeles</option>
+          <option value="paris">Paris</option>
+          <option value="tokyo">Tokyo</option>
+          <option value="london">London</option>
+        </select>
+        <button id="get-weather-btn">Get Weather</button>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
   </body>
 </html>
