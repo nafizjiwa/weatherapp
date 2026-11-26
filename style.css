@@ -10,6 +10,19 @@ body {
   margin: 15px;
 }
 
+.display {
+  background: white;
+  border: 3px solid black;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.85);
+  width: 100%;
+  min-height: 380px; /* Allows the box to grow instead of overflowing */
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
 .dropDownSection {
   display: flex;
   flex-direction: row;
@@ -21,9 +34,19 @@ body {
   border: 2px solid black;
   border-radius: 8px;
   min-height: 90px;
-  padding: 12px;
+  padding: 10px 15px;
+  margin-top: auto; /* Keeps the bar anchored at the bottom of .display */
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.85);
   width: 100%;
+}
+
+.weather {
+  margin: 0;
+}
+
+.weather span {
+  font-size: 30px;
+  margin-left: 15px;
 }
 
 #city-select,
@@ -33,28 +56,10 @@ body {
   font-size: 1.3rem;
 }
 
-.display {
-  background: white;
-  border: 3px solid black;
-  border-radius: 8px;
-  margin-bottom: 25px;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.85);
-  width: 100%;
-  min-height: 350px;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-}
-
-.display span {
-  font-size: 25px;
-  margin-left: 15px;
-}
-
 #location {
   text-align: center;
   font-size: 2em;
-  margin: 15px;
+  margin: 10px 0;
 }
 
 .sectionOne {
@@ -68,7 +73,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 25px 20px;
+  padding: 20px; /* Reduced from 60px so stats fit comfortably inside .display */
   gap: 30px;
   flex-wrap: wrap;
 }
